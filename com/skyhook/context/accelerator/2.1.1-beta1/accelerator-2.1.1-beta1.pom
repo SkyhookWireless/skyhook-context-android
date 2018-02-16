@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.skyhook.context</groupId>
+  <artifactId>accelerator</artifactId>
+  <version>2.1.1-beta1</version>
+  <packaging>aar</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.3</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>20.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.android.support</groupId>
+      <artifactId>appcompat-v7</artifactId>
+      <version>23.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android.gms</groupId>
+      <artifactId>play-services-ads</artifactId>
+      <version>8.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.android.gms</groupId>
+      <artifactId>play-services-location</artifactId>
+      <version>8.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.sgr</groupId>
+      <artifactId>s2-geometry-library-java</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations-java5</artifactId>
+      <version>15.0</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+  <name>Context Accelerator SDK</name>
+  <url>https://github.com/SkyhookWireless/accelerator-quick-start-android</url>
+  <licenses>
+    <license>
+      <name>Skyhook Terms and Conditions</name>
+      <url>https://my.skyhookwireless.com/termsofservice</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>Skyhook</id>
+      <name>Skyhook Inc.</name>
+      <email>support@skyhook.com</email>
+    </developer>
+  </developers>
+</project>
