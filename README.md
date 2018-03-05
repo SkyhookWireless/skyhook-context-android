@@ -43,15 +43,15 @@ Accelerator SDK automatically adds the following permissions to your app's manif
 
 |Android Permission|Used For |
 |------------------|---------|
-|`android.permission.INTERNET`|Communication with Skyhook's servers|
-|`android.permission.CHANGE_WIFI_STATE`|Initiation of Wi-Fi scans|
-|`android.permission.ACCESS_WIFI_STATE`|Obtaining information about the Wi-Fi environment|
-|`android.permission.ACCESS_COARSE_LOCATION`|Obtaining Wi-Fi or cellular based locations|
-|`android.permission.ACCESS_FINE_LOCATION`|Accessing GPS location for hybrid location functionality|
-|`android.permission.WAKE_LOCK`|Keeping processor awake when receiving background updates|
-|`android.permission.ACCESS_NETWORK_STATE`|Checking network connection type to optimize performance|
-|`android.permission.RECEIVE_BOOT_COMPLETED`|Resuming monitoring after device reboot|
-|`com.google.android.gms.permission.ACTIVITY_RECOGNITION`|Determining user activity type to optimize performance|
+|android.permission.INTERNET|Communication with Skyhook's servers|
+|android.permission.CHANGE_WIFI_STATE|Initiation of Wi-Fi scans|
+|android.permission.ACCESS_WIFI_STATE|Obtaining information about the Wi-Fi environment|
+|android.permission.ACCESS_COARSE_LOCATION|Obtaining Wi-Fi or cellular based locations|
+|android.permission.ACCESS_FINE_LOCATION|Accessing GPS location for hybrid location functionality|
+|android.permission.WAKE_LOCK|Keeping processor awake when receiving background updates|
+|android.permission.ACCESS_NETWORK_STATE|Checking network connection type to optimize performance|
+|android.permission.RECEIVE_BOOT_COMPLETED|Resuming monitoring after device reboot|
+|com.google.android.gms.permission.ACTIVITY_RECOGNITION|Determining user activity type to optimize performance|
 
 The `RECEIVE_BOOT_COMPLETED` permission is optional. If you don't want to automatically resume monitoring after reboot, you can exclude the permission in your `AndroidManifest.xml`:
 ```xml
@@ -68,8 +68,8 @@ Accelerator SDK uses the following Google Play Services APIs by default:
 
 |Google Play Services API|Used For|
 |-------------------------|--------|
-|`com.google.android.gms:play-services-location`|Accessing location, geofencing and activity recognition for optimizing performance|
-|`com.google.android.gms:play-services-ads`|Obtaining Google Ad Id for user personification|
+|com.google.android.gms:play-services-location|Accessing location, geofencing and activity recognition for optimizing performance|
+|com.google.android.gms:play-services-ads|Obtaining Google Ad Id for user personification|
 
 It is recommended to keep the default configuration. If you want to opt out of Google Ad Id collection or user personification in general, you can do so by calling the `setOptedIn` or `setUserId` methods. See more details in the [Privacy Considerations](#privacy-considerations) section.
 
@@ -182,8 +182,7 @@ Note that since the values are ordered by probability, you can simply grab the f
 In addition to the five demographic objects, `Persona` also includes a `behaviors` field.
 ```java
 for (Behavior behavior : persona.behaviors) {
-    Log.d(TAG, "id:"+behavior.id
-               +" name:"+behavior.name);
+    Log.d(TAG, "id:" + behavior.id + " name:" + behavior.name);
 }
 ```
 
@@ -314,7 +313,7 @@ If successful, the `onSuccess()` method will be called with an Android `Location
 
 The IP location properties are as follows:
 
-### IPLocation
+### IP Location
 
 Required properties:
 
