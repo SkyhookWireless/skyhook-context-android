@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Supported on Android 2.3.x (Gingerbread), 4.0.x (Ice Cream Sandwich), 4.1.x-4.3 (Jelly Bean), 4.4 (KitKat), 5.0-5.1 (Lollipop), 6.0 (Marshmallow), 7.0-7.1 (Nougat), 8.0-8.1 (Oreo) including forked platforms such as the Kindle Fire.
+Supported on all Android versions starting with 2.3.x (Gingerbread), including forked platforms such as the Kindle Fire.
 
 ## Installation
 
@@ -17,65 +17,96 @@ repositories {
 Add SDK to the `dependencies` section:
 ```gradle
 dependencies {
-    compile 'com.skyhook.context:accelerator:2.1.1+'
+    compile 'com.skyhook.context:accelerator:2.1+'
 }
 ```
 Note that you can exclude transitive dependencies to resolve version conflicts, and include those dependencies separately:
 ```gradle
-compile 'com.android.support:appcompat-v7:26.1.0'
-compile('com.skyhook.context:accelerator:2.1.1+') {
+implementation 'com.android.support:appcompat-v7:28.0.0'
+implementation('com.skyhook.context:accelerator:2.1+') {
     exclude module: 'support-v4'
 }
 ```
 
 ### API key
 
-Put your Skyhook API key under the `application` section in `AndroidManifest.xml`:
+Put your Skyhook API key within the `<application>` element in `AndroidManifest.xml`:
 ```xml
-<meta-data android:name="com.skyhook.context.API_KEY"
-           android:value="Put your key here"/>
+<meta-data
+    android:name="com.skyhook.context.API_KEY"
+    android:value="PUT YOUR KEY HERE"/>
 ```
 You can obtain the API key from [my.skyhookwireless.com](https://my.skyhookwireless.com).
+
+### Apache HTTP library
+
+If your app is targeting Android P (`targetSdkVersion` is 28 or higher), add the following declaration within the `application` element in `AndroidManifest.xml`:
+```xml
+<uses-library
+    android:name="org.apache.http.legacy"
+    android:required="false"/>
+```
 
 ### Permissions
 
 Accelerator SDK automatically adds the following permissions to your app's manifest:
 
-|Android Permission|Used For |
-|------------------|---------|
-|android.permission.INTERNET|Communication with Skyhook's servers|
-|android.permission.CHANGE_WIFI_STATE|Initiation of Wi-Fi scans|
-|android.permission.ACCESS_WIFI_STATE|Obtaining information about the Wi-Fi environment|
-|android.permission.ACCESS_COARSE_LOCATION|Obtaining Wi-Fi or cellular based locations|
-|android.permission.ACCESS_FINE_LOCATION|Accessing GPS location for hybrid location functionality|
-|android.permission.WAKE_LOCK|Keeping processor awake when receiving background updates|
-|android.permission.ACCESS_NETWORK_STATE|Checking network connection type to optimize performance|
-|android.permission.RECEIVE_BOOT_COMPLETED|Resuming monitoring after device reboot|
-|com.google.android.gms.permission.ACTIVITY_RECOGNITION|Determining user activity type to optimize performance|
+| Android Permission                                     | Used For
+|--------------------------------------------------------|---------
+| android.permission.INTERNET                            | Communication with Skyhook's servers
+| android.permission.CHANGE_WIFI_STATE                   | Initiation of Wi-Fi scans
+| android.permission.ACCESS_WIFI_STATE                   | Obtaining information about the Wi-Fi environment
+| android.permission.ACCESS_COARSE_LOCATION              | Obtaining Wi-Fi or cellular based locations
+| android.permission.ACCESS_FINE_LOCATION                | Accessing GPS location for hybrid location functionality
+| android.permission.WAKE_LOCK                           | Keeping processor awake when receiving background updates
+| android.permission.ACCESS_NETWORK_STATE                | Checking network connection type to optimize performance
+| android.permission.RECEIVE_BOOT_COMPLETED              | Resuming monitoring after device reboot
+| android.permission.FOREGROUND_SERVICE                  | Obtaining location in background mode
+| com.google.android.gms.permission.ACTIVITY_RECOGNITION | Determining user activity type to optimize performance
 
 The `RECEIVE_BOOT_COMPLETED` permission is optional. If you don't want to automatically resume monitoring after reboot, you can exclude the permission in your `AndroidManifest.xml`:
 ```xml
 <manifest ... xmlns:tools="http://schemas.android.com/tools">
     ...
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.RECEIVE_BOOT_COMPLETED"
+        tools:node="remove"/>
     ...
 </manifest>
 ```
+
+The `FOREGROUND_SERVICE` permission may also be excluded depending on your campaign configuration and accuracy requirements. Please contact Skyhook support for more details.
 
 ### Google Play Services
 
 Accelerator SDK uses the following Google Play Services APIs by default:
 
-|Google Play Services API|Used For|
-|-------------------------|--------|
-|com.google.android.gms:play-services-location|Accessing location, geofencing and activity recognition for optimizing performance|
-|com.google.android.gms:play-services-ads|Obtaining Google Ad Id for user personification|
+| Google Play Services API                      | Used For
+|-----------------------------------------------|---------
+| com.google.android.gms:play-services-location | Accessing location, geofencing and activity recognition for optimizing performance|
+| com.google.android.gms:play-services-ads      | Obtaining Google Ad Id for user personification|
 
-It is recommended to keep the default configuration. If you want to opt out of Google Ad Id collection or user personification in general, you can do so by calling the `setOptedIn` or `setUserId` methods. See more details in the [Privacy Considerations](#privacy-considerations) section.
+If your application is using Google Play Services on its own it is recommended to align versions of all dependent `play-services-xxx` modules to avoid conflicts at compile time or runtime.
 
-However, if you still want to remove the dependency to the `play-services-ads` module in your app entirely, you can do so in your `build.gradle`:
+For example, if your app is using `play-services-maps:16.0.0`, add the following dependencies in your `build.gradle`:
 ```gradle
-compile('com.skyhook.context:accelerator:2.1.1+') {
+dependencies {
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    runtimeOnly 'com.google.android.gms:play-services-ads:16.0.0'
+    ...
+}
+```
+
+Note that the oldest version of Google Play Services supported by Accelerator SDK is 8.1.0.
+
+#### Opting out of Google Ad Id collection
+
+If you want to opt out of Google Ad Id collection or user personification in general, you can do so by calling the `setOptedIn` or `setUserId` methods. See more details in the [Privacy Considerations](#privacy-considerations) section.
+
+If you also want to remove the dependency to the `play-services-ads` module in your app entirely, you can do so in your `build.gradle`:
+```gradle
+implementation('com.skyhook.context:accelerator:2.1+') {
     exclude module: 'play-services-ads'
 }
 ```
@@ -161,9 +192,9 @@ Each of these properties is a `List` composed of `Demographic` objects, listed i
 For example, to list all the values for the current ethnicity persona:
 ```java
 for (Demographic demographic : persona.ethnicity) {
-    Log.d(TAG, "value:"+demographic.value
-               +" probability:"+demographic.probability
-               +" variance:"+demographic.variance);
+    Log.d(TAG, "value:" + demographic.value
+               + " probability:" + demographic.probability
+               + " variance:" + demographic.variance);
 }
 ```
 
@@ -243,7 +274,7 @@ Implement the broadcast receiver for handling campain venue transitions:
 ```java
 public void onReceive(Context context, Intent intent) {
     if (Accelerator.hasError(intent)) {
-        int errorCode = Accelerator.getErrorCode(intent));
+        int errorCode = Accelerator.getErrorCode(intent);
         // handle error
     } else {
         CampaignVenue venue = Accelerator.getTriggeringCampaignVenue(intent);
@@ -255,8 +286,7 @@ public void onReceive(Context context, Intent intent) {
 }
 ```
 
-IP Location
------------
+## IP Location
 
 The Context Accelerator SDK can also be used to give you on-demand IP locations using the requesting remote IP:
 ```java
@@ -313,42 +343,38 @@ If successful, the `onSuccess()` method will be called with an Android `Location
 
 The IP location properties are as follows:
 
-### IP Location
-
-Required properties:
-
-Method Name | Property Type | Definition
-------------|---------------| ----------
-getLatitude() | double | latitude, in degrees
-getLongitude() | double | longitude, in degrees
-getTime() | long | UTC time of this fix, in milliseconds since January 1, 1970
+Method Name      | Property Type | Definition
+-----------------|---------------| ----------
+getLatitude()    | double        | latitude, in degrees
+getLongitude()   | double        | longitude, in degrees
+getTime()        | long          | UTC time of this fix, in milliseconds since January 1, 1970
 
 Required extras:
 
-Extra Name | Property Type | Definition
------------|---------------| ----------
-elapsedRealtimeMillis | long | time of this fix in milliseconds, in elapsed real-time since system boot
+Extra Name            | Property Type | Definition
+----------------------|---------------| ----------
+elapsedRealtimeMillis | long          | time of this fix in milliseconds, in elapsed real-time since system boot
 
 Optional properties:
 
-Method Name | Property Type | Definition
-------------|---------------| ----------
-getAccuracy() | float | horizontal accuracy if available, in meters
-getAltitude() | double | altitude if available, in meters above sea level
+Method Name   | Property Type | Definition
+--------------|---------------| ----------
+getAccuracy() | float         | horizontal accuracy if available, in meters
+getAltitude() | double        | altitude if available, in meters above sea level
 
 Optional extras:
 
-Extra Name | Property Type | Definition
------------|---------------| ----------
-type | [IPLocationType](#iplocationtype) | type of IP address if available
-streetAddress | StreetAddress | street address if available, currently only postalCode is populated
+Extra Name    | Property Type                     | Definition
+--------------|-----------------------------------| ----------
+type          | [IPLocationType](#iplocationtype) | type of IP address if available
+streetAddress | StreetAddress                     | street address if available, currently only postalCode is populated
 
-#### IPLocationType
+IP location types:
 
-Value | Definiton
-------|----------
-FIXED | fixed IP address
-MOBILE | mobile IP address
+Value   | Definiton
+--------|----------
+FIXED   | fixed IP address
+MOBILE  | mobile IP address
 UNKNOWN | unable to resolve type of IP
 
 ## Venue Information
@@ -423,8 +449,7 @@ Accelerator.getVenueInfoAtLocation()
            });
 ```
 
-Privacy Considerations
-----------------------
+## Privacy Considerations
 
 For apps using Google Play Services, the Context Accelerator SDK will collect certain usage information in order to improve the quality of Skyhook's positioning and context products. For a detailed overview of the data that the Skyhook Context Accelerator SDK will collect and use, please read our [Privacy Policy](http://www.skyhookwireless.com/privacy-policy/skyhook). Please note that for apps not using Google Play Services, user-based personas are not currently supported and the Accelerator SDK will only collect and provide anonymous location information.
 
@@ -464,6 +489,6 @@ Accelerator.setUserId("some-valid-and-unique-user-id");
 Accelerator.setOptedIn(true);
 ```
 
-If either of these conditions are not met, the default behavior of the SDK is to treat the user as opted out and disable data collection on the Server.
+If either of these conditions are not met, the default behavior of the SDK is to treat the user as opted out and disable data collection on the server.
 
-For more details how to configure usage of Google Play Services in your app see the [Google Play Services](#google-play-services) section.
+For more details on how to configure usage of Google Play Services in your app see the [Google Play Services](#google-play-services) section.
