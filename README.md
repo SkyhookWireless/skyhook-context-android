@@ -17,13 +17,13 @@ repositories {
 Add SDK to the `dependencies` section:
 ```gradle
 dependencies {
-    compile 'com.skyhook.context:accelerator:2.1+'
+    implementation 'com.skyhook.context:accelerator:2.1.4'
 }
 ```
 Note that you can exclude transitive dependencies to resolve version conflicts, and include those dependencies separately:
 ```gradle
 implementation 'com.android.support:appcompat-v7:28.0.0'
-implementation('com.skyhook.context:accelerator:2.1+') {
+implementation('com.skyhook.context:accelerator:2.1.4') {
     exclude module: 'support-v4'
 }
 ```
@@ -37,15 +37,6 @@ Put your Skyhook API key within the `<application>` element in `AndroidManifest.
     android:value="PUT YOUR KEY HERE"/>
 ```
 You can obtain the API key from [my.skyhookwireless.com](https://my.skyhookwireless.com).
-
-### Apache HTTP library
-
-If your app is targeting Android P (`targetSdkVersion` is 28 or higher), add the following declaration within the `application` element in `AndroidManifest.xml`:
-```xml
-<uses-library
-    android:name="org.apache.http.legacy"
-    android:required="false"/>
-```
 
 ### Permissions
 
