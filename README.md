@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Supported on all Android versions starting with 2.3.x (Gingerbread), including forked platforms such as the Kindle Fire.
+Supported on all Android versions starting with 2.3.x (Gingerbread).
 
 ## Installation
 
@@ -36,7 +36,7 @@ Put your Skyhook API key within the `<application>` element in `AndroidManifest.
     android:name="com.skyhook.context.API_KEY"
     android:value="PUT YOUR KEY HERE"/>
 ```
-You can obtain the API key from [my.skyhookwireless.com](https://my.skyhookwireless.com).
+You can obtain the API key from [my.skyhookwireless.com](https://my.skyhookwireless.com), creating an account and a new Context project.
 
 ### Permissions
 
@@ -261,7 +261,7 @@ Declare a receiver with the intent filter set to the `ACCELERATOR_EVENT` action:
 </receiver>
 ```
 
-Implement the broadcast receiver for handling campain venue transitions:
+Implement the broadcast receiver for handling campaign venue transitions:
 ```java
 public void onReceive(Context context, Intent intent) {
     if (Accelerator.hasError(intent)) {
@@ -391,7 +391,7 @@ Accelerator.getNearbyMonitoredVenues(100)
            });
 ```
 
-### Venue Information by unique identifer
+### Venue Information by unique identifier
 
 The `getVenueInfo` method allows the client to obtain more detailed venue information using the unqiue venue identifiers from the `CampaignVenue` and `NearbyCampaignVenue` objects:
 ```java
